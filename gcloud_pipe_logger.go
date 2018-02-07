@@ -11,34 +11,33 @@ import (
 	"golang.org/x/net/context"
 )
 
-func setupLogger() *logging.Logger {
+func setupLogger() *logging.Client {
 	ctx := context.Background()
 	projectID := os.Getenv("GCLOUD_PROJECT_ID")
-	logName := os.Args[1]
-
 	client, err := logging.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}
-	logger := client.Logger(logName)
+	return client
+}
 
+func main() {
+	var entry logging.Entry
+	logName := os.Args[1]
+	scanner := bufio.NewScanner(os.Stdin)
+	client := setupLogger()
+	logger := client.Logger(logName)
+	for scanner.Scan() {
+		entry = logging.Entry{Payload: scanner.Text()}
+		logger.Log(entry)
+	}
+	logger.Flush()
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
 	defer func() {
 		if err := client.Close(); err != nil {
 			log.Fatalf("Failed to close client: %v", err)
 		}
 	}()
-	return logger
-}
-
-func main() {
-	var entry logging.Entry
-	scanner := bufio.NewScanner(os.Stdin)
-	logger := setupLogger()
-	for scanner.Scan() {
-		entry = logging.Entry{Payload: scanner.Text()}
-		logger.Log(entry)
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "reading standard input:", err)
-	}
 }

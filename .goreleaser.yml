@@ -1,0 +1,14 @@
+project_name: browsh
+builds:
+  - main: .
+    binary: gcloud_pipe_logger
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+    ldflags: -s -w
+
+archive:
+  format: binary
