@@ -8,5 +8,5 @@ env:
 script: true
 after_success:
   - go get -u github.com/goreleaser/goreleaser
-  - goreleaser --snapshot
+  - goreleaser
 
