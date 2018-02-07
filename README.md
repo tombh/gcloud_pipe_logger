@@ -9,4 +9,4 @@ Fluentd or in-app client libraries (eg; Ruby, Python, etc libs). If you only
 have basic requirements then it can easily be overkill to use either of those
 methods.
 
-So just download one of the prebuilt static binaries from the [releases](/https://github.com/tombh/gcloud_pipe_logger/releases) and away you go.
+So just download one of the prebuilt static binaries from the [releases](https://github.com/tombh/gcloud_pipe_logger/releases) and away you go.
